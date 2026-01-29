@@ -10,24 +10,42 @@ echo 2. Create a File
 echo 3. Copy a File
 echo 4. Move a File
 echo 5. Create a shortcut
-echo 6. Display a File's ACL (Access control list, to view permissions)
+echo 6. Display a File's ACL
+echo 7. Display or Change File Attributes
+echo 8. Display or Change Current Directory
+echo 9. Delete Files
+echo 10. Create a Directory
+echo 11. Remove a Directory
+echo 12. Rename a File
+echo 13. Save and Change Directory (pushd/popd)
+echo 14. Replace a File
+echo 15. Display Directory Tree
+echo 16. Copy Files and Directory Trees (xcopy)
 echo.
-set /p choice=Choose an option (1-6) or 'q' to quit: 
+set /p choice=Choose an option (1-16) or 'q' to quit: 
 if "%choice%"=="1" goto listfiles
 if "%choice%"=="2" goto createfile
 if "%choice%"=="3" goto copyfile
 if "%choice%"=="4" goto movefile
 if "%choice%"=="5" goto createshortcut
 if "%choice%"=="6" goto displayacl
-if "%choice%"=="q" goto mainmenu
-else (
-	echo Invalid choice. Please try again.
-	goto submenu
-)
+if "%choice%"=="7" goto fileattributes
+if "%choice%"=="8" goto changedir
+if "%choice%"=="9" goto deletefiles
+if "%choice%"=="10" goto createdir
+if "%choice%"=="11" goto removedir
+if "%choice%"=="12" goto renamefile
+if "%choice%"=="13" goto pushdpopd
+if "%choice%"=="14" goto replacefile
+if "%choice%"=="15" goto dirtree
+if "%choice%"=="16" goto xcopyfiles
+if "%choice%"=="q" exit /b 0
+echo Invalid choice. Please try again.
+pause
+goto submenu
 
 :listfiles
 echo.
-echo --- List Files in a directory ---
 set /p directory=Specify a directory: 
 if [%directory%]==[] (
 	echo.
@@ -38,14 +56,12 @@ if [%directory%]==[] (
 set directory=%directory:"=%
 dir "%directory%"
 echo.
-echo Exit code: %ERRORLEVEL%
 pause
 echo.
 goto submenu
 
 :createfile
 echo.
-echo --- Create a File ---
 set /p filename=Input filename (with path if needed, example: %USERPROFILE%\Desktop\newfile.txt or just newfile.txt): 
 set /p bytesize=Input file size in bytes (leave empty for 1000 bytes): 
 if [%filename%]==[] (
@@ -62,14 +78,12 @@ if [%bytesize%]==[] (
 	fsutil file createNew "%filename%" %bytesize%
 )
 echo.
-echo Exit code: %ERRORLEVEL%
 pause
 echo.
 goto submenu
 
 :copyfile
 echo.
-echo --- Copy a File ---
 set /p source=Input source file: 
 set /p destination=Input destination directory: 
 if [%source%]==[] (
@@ -88,14 +102,12 @@ set source=%source:"=%
 set destination=%destination:"=%
 call copy "%source%" "%destination%"
 echo.
-echo Exit code: %ERRORLEVEL%
 pause
 echo.
 goto submenu
 
 :movefile
 echo.
-echo --- Move a File ---
 set /p source=Input source file: 
 set /p destination=Input destination directory: 
 if [%source%]==[] (
@@ -114,14 +126,12 @@ set source=%source:"=%
 set destination=%destination:"=%
 call move "%source%" "%destination%"
 echo.
-echo Exit code: %ERRORLEVEL%
 pause
 echo.
 goto submenu
 
 :createshortcut
 echo.
-echo --- Create a shortcut ---
 set /p choice=Do you want to link to a file or directory? (f/d):
 if "%choice%"=="f" (
 	set /p target=Input the path (relative or absolute) to the file you want to link:
@@ -149,8 +159,6 @@ if [%name%]==[] (
 set name=%name:"=%
 mklink "%name%" "%target%"
 echo.
-echo Exit code: %ERRORLEVEL%
-echo.
 echo You might want to move the generated shortcut somewhere else.
 echo.
 goto submenu
@@ -173,7 +181,6 @@ mklink /D "%name%" "%target%"
 echo.
 echo You might want to move the generated shortcut somewhere else.
 echo.
-echo Exit code: %ERRORLEVEL%
 pause
 echo.
 goto submenu
@@ -189,9 +196,6 @@ if [%in%]==[] (
 set in=%in:"=%
 icacls "%in%"
 echo.
-echo Exit code: %ERRORLEVEL%
 pause
 echo.
 goto submenu
-
-:mainmenu

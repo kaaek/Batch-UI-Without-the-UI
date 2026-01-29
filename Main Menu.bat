@@ -3,7 +3,7 @@
 cls
 echo.
 echo ========================================
-echo       WINDOWS CMD BATCH MENU
+echo            WINDOWS UTILITY
 echo ========================================
 echo.
 echo 1. File Operations

@@ -26,7 +26,6 @@ echo.
 echo --- Running Processes ---
 tasklist
 echo.
-echo Exit code: %ERRORLEVEL%
 pause
 goto submenu
 
@@ -44,7 +43,6 @@ if "%processname%"=="" (
 	tasklist /fi "imagename eq %processname%" /v
 )
 echo.
-echo Exit code: %ERRORLEVEL%
 pause
 goto submenu
 
@@ -72,7 +70,6 @@ if /i "%confirm%"=="y" (
 	if errorlevel 1 (
 		taskkill /f /pid "%processkill%" 2>nul
 	)
-    echo Exit code: %ERRORLEVEL%
 	echo.
 ) else (
 	echo Termination cancelled.
@@ -96,6 +93,6 @@ if ["%program%"]==[] (
 call set program=%program%
 start "" "%program%"
 echo.
-echo Exit code: %ERRORLEVEL%
+
 pause
 goto submenu

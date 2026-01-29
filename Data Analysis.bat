@@ -95,7 +95,6 @@ if errorlevel 1 (
 	echo No matches found.
 ) else (
 	echo.
-	echo Exit code: %ERRORLEVEL%
 )
 pause
 goto submenu
@@ -204,7 +203,6 @@ if %ERRORLEVEL%==0 (
 	echo Successfully sorted and saved to:
 	echo %filepath%
 ) else (
-    echo Exit code: %ERRORLEVEL%
 	echo Error occurred while sorting file.
 )
 echo.
@@ -252,7 +250,6 @@ echo ========================================
 echo.
 fc "%file1%" "%file2%"
 echo.
-echo Exit code: %ERRORLEVEL%
 if %ERRORLEVEL%==0 (
 	echo Files are identical.
 ) else (

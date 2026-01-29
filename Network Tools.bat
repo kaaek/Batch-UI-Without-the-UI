@@ -24,8 +24,6 @@ else (
 echo --- Network Interfaces ---
 ipconfig /all
 echo.
-echo Exit code: %ERRORLEVEL%
-echo.
 goto submenu
 
 :pingtest
@@ -33,8 +31,6 @@ echo --- Ping Test ---
 set /p pingtarget=Enter the IP address or hostname to ping (leave empty for Google DNS 8.8.8.8):
 if [%pingtarget%]==[] set pingtarget=8.8.8.8
 ping %pingtarget%
-echo.
-echo Exit code: %ERRORLEVEL%
 echo.
 goto submenu
 
@@ -44,15 +40,11 @@ set /p tracerttarget=Enter the IP address or hostname to traceroute (leave empty
 if [%tracerttarget%]==[] set tracerttarget=8.8.8.8
 tracert %tracerttarget%
 echo.
-echo Exit code: %ERRORLEVEL%
-echo.
 goto submenu
 
 :activeconnections
 echo --- Active Network Connections ---
 netstat -an
-echo.
-echo Exit code: %ERRORLEVEL%
 echo.
 goto submenu
 
@@ -61,8 +53,6 @@ echo --- DNS Lookup ---
 set /p dnstarget=Enter the domain name to look up (leave empty for example.com):
 if [%dnstarget%]==[] set dnstarget=example.com
 nslookup %dnstarget%
-echo.
-echo Exit code: %ERRORLEVEL%
 echo.
 goto submenu
 
