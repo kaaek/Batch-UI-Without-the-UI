@@ -1,6 +1,7 @@
 @echo off
 rem View System Information
-
+echo.
+echo --- System Information ---
 echo Computer Name: %COMPUTERNAME%
 echo User Name: %USERNAME%
 echo Login Server: %LOGONSERVER%
@@ -33,3 +34,7 @@ echo.
 
 echo --- Detailed System Information ---
 systeminfo
+
+echo.
+echo Press any key to return to main menu...
+pause >nul

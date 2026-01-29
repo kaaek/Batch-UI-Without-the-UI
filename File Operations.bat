@@ -1,14 +1,17 @@
 @echo off
 
-rem File Operations (TO-DO: add labels for each functionality. Need an outer label for this submenu.)
+rem File Operations
 :submenu
-echo File Operations Menu:
+cls
+echo.
+echo --- File Operations Menu ---
 echo 1. List Files in a directory
 echo 2. Create a File
 echo 3. Copy a File
 echo 4. Move a File
 echo 5. Create a shortcut
 echo 6. Display a File's ACL (Access control list, to view permissions)
+echo.
 set /p choice=Choose an option (1-6) or 'q' to quit: 
 if "%choice%"=="1" goto listfiles
 if "%choice%"=="2" goto createfile
@@ -23,28 +26,36 @@ else (
 )
 
 :listfiles
-rem List Files in a directory
+echo.
+echo --- List Files in a directory ---
 set /p directory=Specify a directory: 
-if "%directory%"=="" (
+if [%directory%]==[] (
+	echo.
 	echo Directory cannot be empty.
+	echo.
 	goto submenu
 )
 set directory=%directory:"=%
 dir "%directory%"
 echo.
 echo Exit code: %ERRORLEVEL%
+pause
+echo.
 goto submenu
 
 :createfile
-rem Create a File
+echo.
+echo --- Create a File ---
 set /p filename=Input filename (with path if needed, example: %USERPROFILE%\Desktop\newfile.txt or just newfile.txt): 
 set /p bytesize=Input file size in bytes (leave empty for 1000 bytes): 
-if "%filename%"=="" (
+if [%filename%]==[] (
+	echo.
 	echo Filename cannot be empty.
+	echo.
 	goto submenu
 )
 set filename=%filename:"=%
-if "%bytesize%"=="" (
+if [%bytesize%]==[] (
 	fsutil file createNew "%filename%" 1000 
 ) else (
 	set bytesize=%bytesize:"=%
@@ -52,18 +63,25 @@ if "%bytesize%"=="" (
 )
 echo.
 echo Exit code: %ERRORLEVEL%
+pause
+echo.
 goto submenu
 
 :copyfile
-rem Copy a File
+echo.
+echo --- Copy a File ---
 set /p source=Input source file: 
 set /p destination=Input destination directory: 
-if "%source%"=="" (
+if [%source%]==[] (
+	echo.
 	echo Source file cannot be empty.
+	echo.
 	goto submenu
 )
-if "%destination%"=="" (
+if [%destination%]==[] (
+	echo.
 	echo Destination directory cannot be empty.
+	echo.
 	goto submenu
 )
 set source=%source:"=%
@@ -71,18 +89,25 @@ set destination=%destination:"=%
 call copy "%source%" "%destination%"
 echo.
 echo Exit code: %ERRORLEVEL%
+pause
+echo.
 goto submenu
 
 :movefile
-rem Move a File
+echo.
+echo --- Move a File ---
 set /p source=Input source file: 
 set /p destination=Input destination directory: 
-if "%source%"=="" (
+if [%source%]==[] (
+	echo.
 	echo Source file cannot be empty.
+	echo.
 	goto submenu
 )
-if "%destination%"=="" (
+if [%destination%]==[] (
+	echo.
 	echo Destination directory cannot be empty.
+	echo.
 	goto submenu
 )
 set source=%source:"=%
@@ -90,10 +115,13 @@ set destination=%destination:"=%
 call move "%source%" "%destination%"
 echo.
 echo Exit code: %ERRORLEVEL%
+pause
+echo.
 goto submenu
 
 :createshortcut
-rem Create a shortcut
+echo.
+echo --- Create a shortcut ---
 set /p choice=Do you want to link to a file or directory? (f/d):
 if "%choice%"=="f" (
 	set /p target=Input the path (relative or absolute) to the file you want to link:
@@ -106,41 +134,55 @@ if "%choice%"=="f" (
 )
 :createshortcutf
 set /p name=Input new shortcut name:
-if "%target%"=="" (
+if [%target%]==[] (
+	echo.
 	echo Target cannot be empty.
+	echo.
 	goto submenu
 )
-if "%name%"=="" (
+if [%name%]==[] (
+	echo.
 	echo Shortcut name cannot be empty.
+	echo.
 	goto submenu
 )
 set name=%name:"=%
 mklink "%name%" "%target%"
 echo.
 echo Exit code: %ERRORLEVEL%
+echo.
 echo You might want to move the generated shortcut somewhere else.
+echo.
 goto submenu
 :createshortcutd
 set /p name=Input new shortcut name:
-if "%target%"=="" (
+if [%target%]==[] (
+	echo.
 	echo Target cannot be empty.
+	echo.
 	goto submenu
 )
-if "%name%"=="" (
+if [%name%]==[] (
+	echo.
 	echo Shortcut name cannot be empty.
+	echo.
 	goto submenu
 )
 set name=%name:"=%
 mklink /D "%name%" "%target%"
 echo.
-echo Exit code: %ERRORLEVEL%
 echo You might want to move the generated shortcut somewhere else.
+echo.
+echo Exit code: %ERRORLEVEL%
+pause
+echo.
 goto submenu
 
 :displayacl
-rem Display a File's ACL
+echo.
+echo --- Display a File's ACL (Access control list, to view permissions) ---
 set /p in=Specify a file or directory: 
-if "%in%"=="" (
+if [%in%]==[] (
 	echo File or directory cannot be empty.
 	goto submenu
 )
@@ -148,4 +190,8 @@ set in=%in:"=%
 icacls "%in%"
 echo.
 echo Exit code: %ERRORLEVEL%
+pause
+echo.
 goto submenu
+
+:mainmenu
