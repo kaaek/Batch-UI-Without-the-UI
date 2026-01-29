@@ -31,6 +31,7 @@ if "%directory%"=="" (
 )
 set directory=%directory:"=%
 dir "%directory%"
+echo.
 echo Exit code: %ERRORLEVEL%
 goto submenu
 
@@ -49,6 +50,7 @@ if "%bytesize%"=="" (
 	set bytesize=%bytesize:"=%
 	fsutil file createNew "%filename%" %bytesize%
 )
+echo.
 echo Exit code: %ERRORLEVEL%
 goto submenu
 
@@ -67,8 +69,10 @@ if "%destination%"=="" (
 set source=%source:"=%
 set destination=%destination:"=%
 call copy "%source%" "%destination%"
+echo.
 echo Exit code: %ERRORLEVEL%
 goto submenu
+
 :movefile
 rem Move a File
 set /p source=Input source file: 
@@ -84,6 +88,7 @@ if "%destination%"=="" (
 set source=%source:"=%
 set destination=%destination:"=%
 call move "%source%" "%destination%"
+echo.
 echo Exit code: %ERRORLEVEL%
 goto submenu
 
@@ -111,6 +116,7 @@ if "%name%"=="" (
 )
 set name=%name:"=%
 mklink "%name%" "%target%"
+echo.
 echo Exit code: %ERRORLEVEL%
 echo You might want to move the generated shortcut somewhere else.
 goto submenu
@@ -126,6 +132,7 @@ if "%name%"=="" (
 )
 set name=%name:"=%
 mklink /D "%name%" "%target%"
+echo.
 echo Exit code: %ERRORLEVEL%
 echo You might want to move the generated shortcut somewhere else.
 goto submenu
@@ -139,5 +146,6 @@ if "%in%"=="" (
 )
 set in=%in:"=%
 icacls "%in%"
+echo.
 echo Exit code: %ERRORLEVEL%
 goto submenu
