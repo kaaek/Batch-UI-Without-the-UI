@@ -199,3 +199,397 @@ echo.
 pause
 echo.
 goto submenu
+
+:fileattributes
+echo.
+set /p filepath=Enter file or directory path: 
+if [%filepath%]==[] (
+	echo.
+	echo Path cannot be empty.
+	echo.
+	pause
+	goto submenu
+)
+set filepath=%filepath:"=%
+echo.
+echo Current attributes:
+attrib "%filepath%"
+echo.
+set /p change=Change attributes? ^(y/n^): 
+if /i "%change%"=="y" (
+	goto changeattributes
+)
+pause
+echo.
+goto submenu
+:changeattributes
+echo.
+echo --- Attribute Options ---
+echo 1. Read-only
+echo 2. Hidden
+echo 3. System
+echo 4. Archive
+echo.
+set /p attrchoice=Which attribute do you want to edit? (1-4): 
+if [%attrchoice%]==[] (
+	echo Selection cannot be empty.
+	pause
+	goto submenu
+)
+echo.
+set /p addremove=Do you want to add or remove this attribute? (add/remove): 
+if [%addremove%]==[] (
+	echo Selection cannot be empty.
+	pause
+	goto submenu
+)
+echo.
+if "%attrchoice%"=="1" (
+	if /i "%addremove%"=="add" (
+		attrib +R "%filepath%"
+	) else if /i "%addremove%"=="remove" (
+		attrib -R "%filepath%"
+	) else (
+		echo Invalid selection.
+		pause
+		goto submenu
+	)
+) else if "%attrchoice%"=="2" (
+	if /i "%addremove%"=="add" (
+		attrib +H "%filepath%"
+	) else if /i "%addremove%"=="remove" (
+		attrib -H "%filepath%"
+	) else (
+		echo Invalid selection.
+		pause
+		goto submenu
+	)
+) else if "%attrchoice%"=="3" (
+	if /i "%addremove%"=="add" (
+		attrib +S "%filepath%"
+	) else if /i "%addremove%"=="remove" (
+		attrib -S "%filepath%"
+	) else (
+		echo Invalid selection.
+		pause
+		goto submenu
+	)
+) else if "%attrchoice%"=="4" (
+	if /i "%addremove%"=="add" (
+		attrib +A "%filepath%"
+	) else if /i "%addremove%"=="remove" (
+		attrib -A "%filepath%"
+	) else (
+		echo Invalid selection.
+		pause
+		goto submenu
+	)
+) else (
+	echo Invalid attribute selection.
+	pause
+	goto submenu
+)
+if %ERRORLEVEL%==0 (
+	echo Attribute changed successfully.
+	echo New attributes:
+	attrib "%filepath%"
+)
+pause
+goto submenu
+
+:changedir
+echo.
+echo Current directory:
+cd
+echo.
+set /p newdir=Enter new directory path (or press Enter to keep current): 
+if "%newdir%"=="" (
+	echo Directory unchanged.
+	pause
+	goto submenu
+)
+set newdir=%newdir:"=%
+if exist "%newdir%" (
+	cd /d "%newdir%"
+	echo.
+	echo Changed to: %CD%
+) else (
+	echo Directory does not exist: %newdir%
+)
+pause
+echo.
+goto submenu
+
+:deletefiles
+echo.
+set /p filepath=Enter file path to delete: 
+if [%filepath%]==[] (
+	echo.
+	echo File path cannot be empty.
+	echo.
+	pause
+	goto submenu
+)
+set filepath=%filepath:"=%
+if not exist "%filepath%" (
+	echo.
+	echo File does not exist: %filepath%
+	echo.
+	pause
+	goto submenu
+)
+echo.
+echo This will permanently delete the file(s).
+set /p confirm=Are you sure you want to delete "%filepath%"? ^(y/n^): 
+if /i "%confirm%"=="y" (
+	del "%filepath%"
+	echo.
+	if errorlevel 1 (
+		echo Failed to delete file.
+	) else (
+		echo File^(s^) deleted successfully.
+	)
+) else (
+	echo Deletion cancelled.
+)
+pause
+echo.
+goto submenu
+
+:createdir
+echo.
+set /p dirpath=Enter directory path to create: 
+if [%dirpath%]==[] (
+	echo Directory path cannot be empty.
+	pause
+	goto submenu
+)
+set dirpath=%dirpath:"=%
+if exist "%dirpath%" (
+	echo Directory already exists: %dirpath%
+) else (
+	mkdir "%dirpath%"
+	echo.
+	if %ERRORLEVEL%==0 (
+		echo Directory created successfully: %dirpath%
+	)
+)
+pause
+echo.
+goto submenu
+
+:removedir
+echo.
+set /p dirpath=Enter directory path to remove: 
+if [%dirpath%]==[] (
+	echo Directory path cannot be empty.
+	pause
+	goto submenu
+)
+set dirpath=%dirpath:"=%
+if not exist "%dirpath%" (
+	echo.
+	echo Directory does not exist: %dirpath%
+	echo.
+	pause
+	goto submenu
+)
+echo.
+echo This will remove the directory.
+set /p confirm=Are you sure you want to remove "%dirpath%"? (y/n): 
+if /i "%confirm%"=="y" (
+	echo.
+	goto removedirconfirm
+) else (
+	echo Removal cancelled.
+)
+pause
+goto submenu
+:removedirconfirm
+set /p recursive=Remove subdirectories and files too? (y/n): 
+if /i "%recursive%"=="y" (
+	rmdir /s /q "%dirpath%"
+) else (
+	rmdir /q "%dirpath%"
+)
+echo.
+if %ERRORLEVEL%==0 (
+	echo Directory removed successfully.
+)
+pause
+goto submenu
+
+:renamefile
+echo.
+set /p oldname=Enter current file name: 
+if [%oldname%]==[] (
+	echo File name cannot be empty.
+	pause
+	goto submenu
+)
+set oldname=%oldname:"=%
+if not exist "%oldname%" (
+	echo File does not exist: %oldname%
+	pause
+	goto submenu
+)
+set /p newname=Enter new file name: 
+if [%newname%]==[] (
+	echo New file name cannot be empty.
+	pause
+	goto submenu
+)
+set newname=%newname:"=%
+ren "%oldname%" "%newname%"
+if %ERRORLEVEL%==0 (
+	echo File renamed successfully.
+)
+pause
+echo.
+goto submenu
+
+:pushdpopd
+echo.
+echo Current directory: %CD%
+echo.
+echo 1. Push (save current and change to new directory)
+echo 2. Pop (return to last saved directory)
+echo.
+set /p pdchoice=Choose option (1-2): 
+if "%pdchoice%"=="1" (
+	goto push
+) else if "%pdchoice%"=="2" (
+	popd
+	echo.
+	echo Returned to: %CD%
+) else (
+	echo Invalid choice.
+)
+pause
+echo.
+goto submenu
+:push
+set /p newdir=Enter new directory path: 
+if [%newdir%]==[] (
+	echo.
+	echo Directory path cannot be empty.
+	echo.
+	pause
+	goto submenu
+)
+set newdir=%newdir:"=%
+if exist "%newdir%" (
+	pushd "%newdir%"
+	echo.
+	echo Saved previous directory and changed to: %CD%
+) else (
+	echo Directory does not exist: !newdir!
+)
+echo.
+pause
+goto submenu
+
+:replacefile
+echo.
+set /p sourcefile=Enter source file path: 
+if [%sourcefile%]==[] (
+	echo Source file cannot be empty.
+	pause
+	goto submenu
+)
+set sourcefile=%sourcefile:"=%
+if not exist "%sourcefile%" (
+	echo.
+	echo Source file does not exist: %sourcefile%
+	echo.
+	pause
+	goto submenu
+)
+set /p destdir=Enter destination directory: 
+if [%destdir%]==[] (
+	echo.
+	echo Destination directory cannot be empty.
+	pause
+	goto submenu
+)
+set destdir=%destdir:"=%
+if not exist "%destdir%" (
+	echo Destination directory does not exist: %destdir%
+	pause
+	goto submenu
+)
+echo.
+echo This will replace existing files in the destination.
+set /p confirm=Continue? (y/n): 
+if /i "%confirm%"=="y" (
+	replace "%sourcefile%" "%destdir%"
+) else (
+	echo Replace cancelled.
+)
+pause
+echo.
+goto submenu
+
+:dirtree
+echo.
+set /p dirpath=Enter directory path (or press Enter for current): 
+if "%dirpath%"=="" (
+	set "dirpath=%CD%"
+) else (
+	set dirpath=%dirpath:"=%
+)
+if not exist "%dirpath%" (
+	echo Directory does not exist: %dirpath%
+	pause
+	goto submenu
+)
+echo.
+echo Directory tree for: %dirpath%
+echo.
+tree "%dirpath%" /F
+pause
+goto submenu
+
+:xcopyfiles
+echo.
+set /p source=Enter source path: 
+if [%source%]==[] (
+	echo.
+	echo Source path cannot be empty.
+	pause
+	goto submenu
+)
+set source=%source:"=%
+if not exist "%source%" (
+	echo Source does not exist: %source%
+	pause
+	goto submenu
+)
+set /p destination=Enter destination path: 
+if [%destination%]==[] (
+	echo Destination path cannot be empty.
+	pause
+	goto submenu
+)
+set destination=%destination:"=%
+echo.
+echo Copy options:
+echo 1. Copy files only
+echo 2. Copy subdirectories (including empty ones)
+echo 3. Copy subdirectories (excluding empty ones)
+echo.
+set /p xcopyopt=Choose option (1-3): 
+if "%xcopyopt%"=="1" (
+	xcopy "%source%" "%destination%" /Y
+) else if "%xcopyopt%"=="2" (
+	xcopy "%source%" "%destination%" /E /Y
+) else if "%xcopyopt%"=="3" (
+	xcopy "%source%" "%destination%" /S /Y
+) else (
+	echo Invalid option.
+	pause
+	goto submenu
+)
+pause
+echo.
+goto submenu
