@@ -18,7 +18,7 @@ echo 9. Current Date
 echo 10. Current Time
 echo 11. All Information
 echo.
-set /p choice=Choose an option (1-10) or 'q' to quit: 
+set /p choice=Choose an option ^(1-10^) or 'q' to quit: 
 if "%choice%"=="1" goto basicinfo
 if "%choice%"=="2" goto detailedsysteminfo
 if "%choice%"=="3" goto computerinfo
@@ -30,10 +30,8 @@ if "%choice%"=="8" goto networkinfo
 if "%choice%"=="9" goto dateinfo
 if "%choice%"=="10" goto timeinfo
 if "%choice%"=="q" exit /b 0
-else ( 
-    echo Invalid choice. Please try again.
-    pause
-)
+echo Invalid choice. Please try again.
+pause
 goto submenu
 
 :basicinfo

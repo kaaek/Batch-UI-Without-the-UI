@@ -5,6 +5,7 @@ rem File Operations
 cls
 echo.
 echo --- File Operations Menu ---
+echo.
 echo 1. List Files in a directory
 echo 2. Create a File
 echo 3. Copy a File
@@ -22,7 +23,7 @@ echo 14. Replace a File
 echo 15. Display Directory Tree
 echo 16. Copy Files and Directory Trees (xcopy)
 echo.
-set /p choice=Choose an option (1-16) or 'q' to quit: 
+set /p choice=Choose an option ^(1-16^) or 'q' to quit: 
 if "%choice%"=="1" goto listfiles
 if "%choice%"=="2" goto createfile
 if "%choice%"=="3" goto copyfile
@@ -45,6 +46,7 @@ pause
 goto submenu
 
 :listfiles
+cls
 echo.
 set /p directory=Specify a directory: 
 if [%directory%]==[] (
@@ -61,6 +63,7 @@ echo.
 goto submenu
 
 :createfile
+cls
 echo.
 set /p filename=Input filename (with path if needed, example: %USERPROFILE%\Desktop\newfile.txt or just newfile.txt): 
 set /p bytesize=Input file size in bytes (leave empty for 1000 bytes): 
@@ -83,6 +86,7 @@ echo.
 goto submenu
 
 :copyfile
+cls
 echo.
 set /p source=Input source file: 
 set /p destination=Input destination directory: 
@@ -107,6 +111,7 @@ echo.
 goto submenu
 
 :movefile
+cls
 echo.
 set /p source=Input source file: 
 set /p destination=Input destination directory: 
@@ -131,18 +136,21 @@ echo.
 goto submenu
 
 :createshortcut
+cls
 echo.
-set /p choice=Do you want to link to a file or directory? (f/d):
+set /p choice=Do you want to link to a file or directory? ^(f/d^): 
 if "%choice%"=="f" (
-	set /p target=Input the path (relative or absolute) to the file you want to link:
-	set target=%target:"=%
 	goto createshortcutf
-) else (
-	set /p target=Input the path (relative or absolute) to the directory you want to link:
-	set target=%target:"=%
+) else if "%choice%"=="d" (
 	goto createshortcutd
+) else (
+	echo Invalid choice.
+	pause
+	goto submenu
 )
 :createshortcutf
+set /p target=Input the path ^(relative or absolute^) to the file you want to link: 
+set target=%target:"=%
 set /p name=Input new shortcut name:
 if [%target%]==[] (
 	echo.
@@ -158,11 +166,11 @@ if [%name%]==[] (
 )
 set name=%name:"=%
 mklink "%name%" "%target%"
-echo.
-echo You might want to move the generated shortcut somewhere else.
-echo.
+pause
 goto submenu
 :createshortcutd
+set /p target=Input the path ^(relative or absolute^) to the directory you want to link: 
+set target=%target:"=%
 set /p name=Input new shortcut name:
 if [%target%]==[] (
 	echo.
@@ -178,11 +186,7 @@ if [%name%]==[] (
 )
 set name=%name:"=%
 mklink /D "%name%" "%target%"
-echo.
-echo You might want to move the generated shortcut somewhere else.
-echo.
 pause
-echo.
 goto submenu
 
 :displayacl
@@ -303,7 +307,7 @@ echo Current directory:
 cd
 echo.
 set /p newdir=Enter new directory path (or press Enter to keep current): 
-if "%newdir%"=="" (
+if [%newdir%]==[] (
 	echo Directory unchanged.
 	pause
 	goto submenu
@@ -533,7 +537,7 @@ goto submenu
 :dirtree
 echo.
 set /p dirpath=Enter directory path (or press Enter for current): 
-if "%dirpath%"=="" (
+if [%dirpath%]==[] (
 	set "dirpath=%CD%"
 ) else (
 	set dirpath=%dirpath:"=%

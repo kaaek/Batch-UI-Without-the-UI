@@ -5,12 +5,13 @@ rem Process Management (Allow the user to view running processes, terminate a pr
 cls
 echo.
 echo --- Process Management Menu ---
+echo.
 echo 1. View Running Processes
 echo 2. View Detailed Process Information
 echo 3. Terminate a Process
 echo 4. Start a New Process
 echo.
-set /p choice=Choose an option (1-4) or 'q' to quit: 
+set /p choice=Choose an option ^(1-4^) or 'q' to quit: 
 if "%choice%"=="1" goto viewprocesses
 if "%choice%"=="2" goto detailedprocesses
 if "%choice%"=="3" goto terminateprocess
@@ -35,8 +36,8 @@ echo.
 echo --- Detailed Process Information ---
 echo.
 set "processname="
-set /p processname=Enter process name (e.g., notepad.exe) or press Enter to view all: 
-if "%processname%"=="" (
+set /p processname=Enter process name ^(e.g., notepad.exe^) or press Enter to view all: 
+if [%processname%]==[] (
 	tasklist /v
 ) else (
 	set processname=%processname:"=%
@@ -63,7 +64,7 @@ if [%processkill%]==[] (
 set processkill=%processkill:"=%
 echo.
 echo Terminating processes can cause data loss.
-set /p confirm=Are you sure you want to terminate "%processkill%"? (y/n): 
+set /p confirm=Are you sure you want to terminate "%processkill%"? ^(y/n^): 
 if /i "%confirm%"=="y" (
 	call set processkill=%processkill%
 	taskkill /f /im "%processkill%" 2>nul
@@ -83,7 +84,7 @@ echo.
 echo --- Start a New Process ---
 echo.
 set "program="
-set /p program=Enter program path to start (e.g., C:\Program Files\notepad.exe): 
+set /p program=Enter program path to start ^(e.g., C:\Program Files\notepad.exe^): 
 set program=%program:"=%
 if ["%program%"]==[] (
 	echo Program name cannot be empty.

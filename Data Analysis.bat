@@ -15,7 +15,7 @@ echo 6. Compare Two Files
 echo 7. Display File Contents
 echo 8. Display Hello World
 echo.
-set /p choice=Choose an option (1-8) or 'q' to quit: 
+set /p choice=Choose an option ^(1-8^) or 'q' to quit: 
 if "%choice%"=="1" goto countlines
 if "%choice%"=="2" goto searchpattern
 if "%choice%"=="3" goto countoccurrences
@@ -120,7 +120,7 @@ if not exist "%filepath%" (
 	goto submenu
 )
 set /p pattern=Enter word/pattern to count: 
-if "%pattern%"=="" (
+if [%pattern%]==[] (
 	echo Pattern cannot be empty.
 	pause
 	goto submenu
@@ -177,7 +177,7 @@ echo --- Sort File Contents ---
 echo.
 set "filepath="
 set /p filepath=Enter file path to sort: 
-if "%filepath%"=="" (
+if [%filepath%]==[] (
 	echo File path cannot be empty.
 	pause
 	goto submenu
@@ -265,7 +265,7 @@ echo --- Display File Contents ---
 echo.
 set "filepath="
 set /p filepath=Enter file path to display: 
-if "%filepath%"=="" (
+if [%filepath%]==[] (
 	echo File path cannot be empty.
 	pause
 	goto submenu
