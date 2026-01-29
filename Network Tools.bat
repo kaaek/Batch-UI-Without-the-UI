@@ -17,7 +17,6 @@ echo 8. Add or Remove Computer from Domain
 echo 9. View User Account Details
 echo 10. Stop or Start a Service
 echo 11. Display Network Statistics
-echo 12. Manage Shared Resource Connections
 echo.
 set /p choice=Choose an option ^(1-12^) or 'q' to quit: 
 if "%choice%"=="1" goto networkinterfaces
@@ -31,7 +30,6 @@ if "%choice%"=="8" goto domaincomputer
 if "%choice%"=="9" goto userdetails
 if "%choice%"=="10" goto manageservice
 if "%choice%"=="11" goto networkstats
-if "%choice%"=="12" goto sharedresources
 if "%choice%"=="q" exit /b 0
 echo Invalid choice. Please try again.
 pause

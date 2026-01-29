@@ -1,6 +1,6 @@
 @echo off
 :mainmenu
-cls
+rem cls
 echo.
 echo =======================================
 echo        BATCH UI WITHOUT THE UI 
@@ -19,11 +19,7 @@ if "%choice%"=="2" call "View System Information.bat"
 if "%choice%"=="3" call "Process Management.bat"
 if "%choice%"=="4" call "Network Tools.bat"
 if "%choice%"=="5" call "Data Analysis.bat"
-if "%choice%"=="q" goto exit
+if "%choice%"=="q" exit /b 0
 echo Invalid choice. Please try again.
 pause
 goto mainmenu
-
-:exit
-cls
-exit /b

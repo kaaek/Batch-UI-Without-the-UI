@@ -71,6 +71,7 @@ if [%filename%]==[] (
 	echo.
 	echo Filename cannot be empty.
 	echo.
+	pause
 	goto submenu
 )
 set filename=%filename:"=%
@@ -89,22 +90,24 @@ goto submenu
 cls
 echo.
 set /p source=Input source file: 
-set /p destination=Input destination directory: 
 if [%source%]==[] (
 	echo.
 	echo Source file cannot be empty.
 	echo.
+	pause
 	goto submenu
 )
+set /p destination=Input destination directory: 
 if [%destination%]==[] (
 	echo.
 	echo Destination directory cannot be empty.
 	echo.
+	pause
 	goto submenu
 )
 set source=%source:"=%
 set destination=%destination:"=%
-call copy "%source%" "%destination%"
+copy "%source%" "%destination%"
 echo.
 pause
 echo.
@@ -113,18 +116,20 @@ goto submenu
 :movefile
 cls
 echo.
-set /p source=Input source file: 
-set /p destination=Input destination directory: 
+set /p source=Input source file:  
 if [%source%]==[] (
 	echo.
 	echo Source file cannot be empty.
 	echo.
+	pause
 	goto submenu
 )
+set /p destination=Input destination directory:
 if [%destination%]==[] (
 	echo.
 	echo Destination directory cannot be empty.
 	echo.
+	pause
 	goto submenu
 )
 set source=%source:"=%
@@ -150,14 +155,14 @@ if "%choice%"=="f" (
 )
 :createshortcutf
 set /p target=Input the path ^(relative or absolute^) to the file you want to link: 
-set target=%target:"=%
-set /p name=Input new shortcut name:
 if [%target%]==[] (
 	echo.
 	echo Target cannot be empty.
 	echo.
 	goto submenu
 )
+set target=%target:"=%
+set /p name=Input new shortcut name:
 if [%name%]==[] (
 	echo.
 	echo Shortcut name cannot be empty.
@@ -172,13 +177,13 @@ goto submenu
 set /p target=Input the path ^(relative or absolute^) to the directory you want to link: 
 set target=%target:"=%
 set /p name=Input new shortcut name:
-if [%target%]==[] (
+if ["%target%"]==[""] (
 	echo.
 	echo Target cannot be empty.
 	echo.
 	goto submenu
 )
-if [%name%]==[] (
+if ["%name%"]==[""] (
 	echo.
 	echo Shortcut name cannot be empty.
 	echo.
@@ -190,8 +195,9 @@ pause
 goto submenu
 
 :displayacl
+cls
 echo.
-echo --- Display a File's ACL (Access control list, to view permissions) ---
+set in=""
 set /p in=Specify a file or directory: 
 if [%in%]==[] (
 	echo File or directory cannot be empty.
@@ -205,6 +211,7 @@ echo.
 goto submenu
 
 :fileattributes
+cls
 echo.
 set /p filepath=Enter file or directory path: 
 if [%filepath%]==[] (
@@ -302,6 +309,7 @@ pause
 goto submenu
 
 :changedir
+cls
 echo.
 echo Current directory:
 cd
@@ -314,9 +322,8 @@ if [%newdir%]==[] (
 )
 set newdir=%newdir:"=%
 if exist "%newdir%" (
-	cd /d "%newdir%"
-	echo.
-	echo Changed to: %CD%
+	cd "%newdir%"
+	cd
 ) else (
 	echo Directory does not exist: %newdir%
 )
@@ -325,6 +332,7 @@ echo.
 goto submenu
 
 :deletefiles
+cls
 echo.
 set /p filepath=Enter file path to delete: 
 if [%filepath%]==[] (
@@ -361,9 +369,11 @@ echo.
 goto submenu
 
 :createdir
+cls
 echo.
+set dirpath=""
 set /p dirpath=Enter directory path to create: 
-if [%dirpath%]==[] (
+if "%dirpath%"=="" (
 	echo Directory path cannot be empty.
 	pause
 	goto submenu
@@ -383,9 +393,12 @@ echo.
 goto submenu
 
 :removedir
+cls
 echo.
+set dirpath=""
 set /p dirpath=Enter directory path to remove: 
-if [%dirpath%]==[] (
+if "%dirpath%"=="" (
+	echo.
 	echo Directory path cannot be empty.
 	pause
 	goto submenu
@@ -424,6 +437,7 @@ pause
 goto submenu
 
 :renamefile
+cls
 echo.
 set /p oldname=Enter current file name: 
 if [%oldname%]==[] (
@@ -453,6 +467,7 @@ echo.
 goto submenu
 
 :pushdpopd
+cls
 echo.
 echo Current directory: %CD%
 echo.
@@ -494,6 +509,7 @@ pause
 goto submenu
 
 :replacefile
+cls
 echo.
 set /p sourcefile=Enter source file path: 
 if [%sourcefile%]==[] (
@@ -535,6 +551,7 @@ echo.
 goto submenu
 
 :dirtree
+cls
 echo.
 set /p dirpath=Enter directory path (or press Enter for current): 
 if [%dirpath%]==[] (
@@ -555,6 +572,7 @@ pause
 goto submenu
 
 :xcopyfiles
+cls
 echo.
 set /p source=Enter source path: 
 if [%source%]==[] (

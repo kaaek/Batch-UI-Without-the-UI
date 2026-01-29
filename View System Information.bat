@@ -13,12 +13,10 @@ echo 4. Processor Information
 echo 5. Memory Information
 echo 6. Disk Drive Information
 echo 7. Hostname
-echo 8. Network Interfaces
-echo 9. Current Date
-echo 10. Current Time
-echo 11. All Information
+echo 8. Current Date
+echo 9. Current Time
 echo.
-set /p choice=Choose an option ^(1-10^) or 'q' to quit: 
+set /p choice=Choose an option ^(1-9^) or 'q' to quit: 
 if "%choice%"=="1" goto basicinfo
 if "%choice%"=="2" goto detailedsysteminfo
 if "%choice%"=="3" goto computerinfo
@@ -26,9 +24,8 @@ if "%choice%"=="4" goto processorinfo
 if "%choice%"=="5" goto memoryinfo
 if "%choice%"=="6" goto diskinfo
 if "%choice%"=="7" goto hostnameinfo
-if "%choice%"=="8" goto networkinfo
-if "%choice%"=="9" goto dateinfo
-if "%choice%"=="10" goto timeinfo
+if "%choice%"=="8" goto dateinfo
+if "%choice%"=="9" goto timeinfo
 if "%choice%"=="q" exit /b 0
 echo Invalid choice. Please try again.
 pause
@@ -123,15 +120,6 @@ echo Computer Name: %COMPUTERNAME%
 echo.
 echo Full Hostname:
 hostname
-echo.
-pause
-goto submenu
-
-:networkinfo
-rem Display TCP/IP Network Configuration
-cls
-echo.
-ipconfig /all
 echo.
 pause
 goto submenu
